@@ -73,10 +73,10 @@ $users = get_all_users($conn);
         <?php
         foreach ($users as $user) {
             echo "<tr>";
-            echo "<td>" . htmlspecialchars($user["username"]) . "</td>";
-            echo "<td>" . htmlspecialchars($user["role"]) . "</td>";
+            echo "<td>" . $user["username"] . "</td>";
+            echo "<td>" . $user["role"] . "</td>";
             echo "</tr>";
-        };
+        }
         ?>
         <!-- <tr>
             <td>Alfreds Futterkiste</td>
