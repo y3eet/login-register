@@ -21,7 +21,7 @@ function get_all_users($conn)
             return $rows;
         }
     } catch (mysqli_sql_exception $e) {
-        echo "Server Error: " . $e->getMessage();
+        echo "Server Error";
     }
     return [];
 }
