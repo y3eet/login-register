@@ -4,6 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
 include("../database.php");
+include("../session.php");
 $current_user = get_session();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["function"])) {
@@ -13,17 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["function"])) {
 
         // ensure only admin can execute this api
         if ($current_user["role"] !== 'admin') {
-            header("Location: ../unauthorized.php");
-            exit;
+            echo json_encode(["success" => false, "message" => "Invalid Access"]);
+            return;
         }
-
-        // api can also be reused if user wants to update their own profile
-        // ensure only current user can update their own profile (No UI Yet)
-        if (isset($_POST["username"]) && $current_user["username"] !== $_POST["username"]) {
-            header("Location: ../unauthorized.php");
-            exit;
-        }
-
 
         if (isset($_POST["username"]) && isset($_POST["role"]) && isset($_POST["id"])) {
             $username = $_POST["username"];
