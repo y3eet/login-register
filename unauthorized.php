@@ -17,12 +17,10 @@ $role = $user["role"];
     <h1>Unauthorized Access</h1>
     <p>You're not authorized to acccess this page!</p>
     <?php
-    if ($role === 'admin') {
-        echo "<a href=\"admin.php\">Go Back to Admin Page</a>";
-    } elseif ($role === 'user') {
-        echo "<a href=\"user.php\">Go Back to User Page</a>";
+    if ($role) {
+        echo "<a href=\"{$role}.php\">Go Back to {$role} Page</a>";
     } else {
-        echo "<a href=\"login.php\">Go Back</a>";
+        echo "<a href=\"login.php\">Please Login First</a>";
     }
     ?>
 </body>
