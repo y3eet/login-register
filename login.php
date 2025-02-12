@@ -54,6 +54,7 @@
                 <label for="password">Password</label>
                 <input required class="input" type="password" name="password" id="password">
                 <input type="hidden" name="function" value="login">
+                <!-- div will be rendered if ajax call has error -->
                 <div id="error" class="error"></div>
 
                 <button style="margin-top: 10px;" class="button" type="submit" name="login">
