@@ -9,6 +9,16 @@
 </head>
 
 <style>
+    body,
+    h1,
+    label,
+    a,
+    button {
+        font-family: Arial, sans-serif;
+    }
+
+
+
     .container {
         display: flex;
         height: 90vh;
