@@ -2,7 +2,7 @@
 
 session_start();
 
-function create_session(string $username, string $role)
+function create_session(string $username, ?string $role = "user")
 {
     $_SESSION["username"] = $username;
     $_SESSION["role"] = $role;

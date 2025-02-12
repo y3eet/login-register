@@ -1,6 +1,3 @@
-<?php
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,9 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <style>
+    body,
+    h1,
+    label,
+    a,
+    button {
+        font-family: Arial, sans-serif;
+    }
+
+
+
     .container {
         display: flex;
         height: 90vh;
@@ -39,58 +47,57 @@
         width: 400px;
         height: 30px;
     }
+
+    .error {
+        color: red;
+        font-size: 14px;
+    }
 </style>
 
 
 <body>
     <div class="container">
-        <form action="register.php" method="POST" class="border">
-            <h1>Register</h1>
-            <label for="username">Username</label>
-            <input required class="input" type="text" name="username">
-            <label for="password">Password</label>
-            <input required class="input" type="password" name="password">
-            <button class="button" type="submit" name="register">
-                Register
-            </button>
+        <form id="register-form" method="POST">
+            <div class="border">
+                <h1>Register</h1>
+                <label for="username">Username</label>
+                <input required class="input" type="text" name="username">
+                <label for="password">Password</label>
+                <input required class="input" type="password" name="password">
+                <input type="hidden" name="function" value="register">
+                <div id="error" class="error"></div>
 
-            <?php
-            include("database.php");
-            function hasDuplicateUsername(string $username, $conn)
-            {
-                $sql = "SELECT * FROM users WHERE username='$username'";
-                try {
-                    $res = mysqli_query($conn, $sql);
-                    return mysqli_num_rows($res) > 0;
-                } catch (mysqli_sql_exception) {
-                    echo "Server Error";
-                }
-            }
-            if (isset($_POST["register"])) {
-                $username = $_POST["username"] ?? null;
-                $password = $_POST["password"] ?? null;
-                if (!$username || !$password) {
-                    echo "Invalid email/password";
-                    return;
-                } elseif (hasDuplicateUsername($username, $conn)) {
-                    echo "Username Already Exist";
-                } else {
-                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                    $sql = "INSERT INTO users (username, password) VALUES ('$username', '$hashed_password')";
-                    try {
-                        mysqli_query($conn, $sql);
-                        header("Location: login.php");
-                    } catch (mysqli_sql_exception) {
-                        echo "Register Error";
-                    }
-                    mysqli_close($conn);
-                }
-            }
-
-            ?>
-            <a href="login.php">Already have an account</a>
+                <button style="margin-top: 10px;" class="button" type="submit" name="register">
+                    Register
+                </button>
+                <a href="login.php">Already have an account</a>
+            </div>
         </form>
     </div>
+    <script>
+        $("#register-form").submit((event) => {
+            event.preventDefault();
+
+            let username = $("#username").val();
+            let password = $("#password").val();
+
+            $.ajax({
+                url: 'ajax/auth.php',
+                type: "POST",
+                data: $("#register-form").serialize(),
+
+            }).done((response) => {
+                console.log(response);
+                if (response.success) {
+                    window.location.href = response.redirect;
+                } else {
+                    $("#error").html(`<strong>${response.message}</strong>`);
+                }
+            }).fail((response) => {
+                $("#error").html(`<strong>Server Error, Please Try Again Later</strong>`);
+            })
+        });
+    </script>
 </body>
 
 </html>
