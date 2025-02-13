@@ -28,14 +28,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["function"])) {
                         "redirect" => "{$role}.php"
                     ]);
                 } else {
-                    echo json_encode(["success" => false, "message" => "Invalid Password"]);
+                    echo json_encode(["success" => false, "message" => "Invalid Password", "field" => "password"]);
                 }
                 mysqli_close($conn);
             } else {
-                echo json_encode(["success" => false, "message" => "Username does not exist"]);
+                echo json_encode(["success" => false, "message" => "Username does not exist", "field" => "username"]);
             }
         } else {
-            echo json_encode(["status" => "error", "message" => "Missing username or password"]);
+            echo json_encode(["success" => false, "message" => "Missing username or password"]);
         }
     }
     // register api
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["function"])) {
             $username = $_POST["username"];
             $password = $_POST["password"];
             if (hasDuplicateUsername($username, $conn)) {
-                echo json_encode(["success" => false, "message" => "Username already exist"]);
+                echo json_encode(["success" => false, "message" => "Username already exist", "field" => "username"]);
             } else {
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 $sql = "INSERT INTO users (username, password) VALUES ('$username', '$hashed_password')";
@@ -71,5 +71,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["function"])) {
         }
     }
 } else {
-    echo json_encode(["status" => "error", "message" => "Invalid request"]);
+    echo json_encode(["success" => false, "message" => "Invalid request"]);
 }
