@@ -13,19 +13,10 @@ if ($user["role"] !== 'user') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Page</title>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <style>
-    body,
-    h1,
-    label,
-    a,
-    button {
-        font-family: Arial, sans-serif;
-    }
-
-
     .container {
         display: flex;
         height: 80vh;
@@ -34,36 +25,15 @@ if ($user["role"] !== 'user') {
         justify-content: center;
         flex-direction: column;
     }
-
-    .input {
-        width: 400px;
-        height: 30px;
-        font-size: 15px;
-    }
-
-    .logout-btn {
-        background-color: rgb(175, 76, 76);
-        border: none;
-        color: white;
-        padding: 8px 16px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 18px;
-        cursor: pointer;
-        border-radius: 8px;
-        width: 100px;
-        height: 50px;
-    }
 </style>
 
-<body>
+<body data-bs-theme="dark" style="margin: 20px">
     <h1>User Page</h1>
-
-    <div>
-        <form class="container" action="user.php" method="POST">
-            <h1>Welcome, <?= $user["username"] ?>!</h1>
-            <button type="submit" name="logout" value="logout" class="logout-btn">Logout</button>
-        </form>
+    <form action="user.php" method="POST">
+        <button type="submit" name="logout" value="logout" class="btn btn-danger">Logout</button>
+    </form>
+    <div class="container">
+        <h1>Welcome, <?= $user["username"] ?>!</h1>
     </div>
 </body>
 
