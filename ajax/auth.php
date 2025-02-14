@@ -4,6 +4,12 @@ include("../session.php");
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
+function hasDuplicateUsername(string $username, $conn)
+{
+    $sql = "SELECT * FROM users WHERE username='$username'";
+    $res = mysqli_query($conn, $sql);
+    return mysqli_num_rows($res) > 0;
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["function"])) {
     $action = $_POST["function"];
@@ -40,12 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["function"])) {
     }
     // register api
     if ($action === "register") {
-        function hasDuplicateUsername(string $username, $conn)
-        {
-            $sql = "SELECT * FROM users WHERE username='$username'";
-            $res = mysqli_query($conn, $sql);
-            return mysqli_num_rows($res) > 0;
-        }
         if (isset($_POST["username"]) && isset($_POST["password"])) {
             $username = $_POST["username"];
             $password = $_POST["password"];
