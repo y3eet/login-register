@@ -42,13 +42,8 @@
                     <!-- div text will be rendered if ajax call has error -->
                     <div class="invalid-feedback" id="username-error"></div>
                 </div>
-
                 <input required class="form-control" type="password" name="password" id="password" placeholder="Password">
-
                 <input type="hidden" name="function" value="register">
-                <!-- div will be rendered if ajax call has error -->
-
-
                 <button class="btn btn-primary" type="submit" name="register">
                     Register
                 </button>
