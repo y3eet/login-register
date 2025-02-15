@@ -36,9 +36,15 @@ if ($user["role"] !== 'admin') {
             </form>
         </div>
     </div>
-    <button id="refresh" class="btn btn-info" style="margin-top: 50px;">
-        Refresh
-    </button>
+    <div class="d-flex mt-200 gap-3 my-4 justify-content-between">
+        <button id="refresh" class="btn btn-info">
+            Refresh
+        </button>
+        <div class="input-group" style="max-width: 500px;">
+            <span class="input-group-text">Search</span>
+            <input id="searchUsername" type="text" class="form-control" placeholder="Search Username" aria-label="Username">
+        </div>
+    </div>
     <table class="table table-striped" id="tableBody">
         <!-- table will be rendered by ajax call fn:loadTable() -->
     </table>
@@ -81,20 +87,37 @@ if ($user["role"] !== 'admin') {
     <script>
         $(document).ready(function() {
             // renders new updated table
-            function loadTable() {
-                $.ajax({
-                    url: "ajax/views/users_table.php",
-                    type: "GET",
-                    success: function(response) {
-                        $("#tableBody").html(response);
-                    }
-                });
+            function loadTable(searchVal) {
+                if (!searchVal) {
+                    $.ajax({
+                        url: "ajax/views/users_table.php",
+                        type: "GET",
+                        success: function(response) {
+                            $("#tableBody").html(response);
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "ajax/views/users_table.php",
+                        type: "POST",
+                        data: {
+                            searchVal
+                        },
+                        success: function(response) {
+                            $("#tableBody").html(response);
+                        }
+                    });
+                }
             }
             loadTable();
             $(document).on("click", "#refresh", function() {
                 loadTable();
             });
 
+            $(document).on("input", "#searchUsername", function() {
+                let searchValue = $(this).val();
+                loadTable(searchValue);
+            });
             // open modal
             $(document).on("click", "#editBtn", function() {
                 let userId = $(this).data("id");
@@ -107,8 +130,7 @@ if ($user["role"] !== 'admin') {
                 $("#editUsername").val(username);
                 $("#editRole").val(role);
             });
-
-
+            $(document).on("")
             // updates a user by ajax call
             $("#editForm").submit(function(event) {
                 event.preventDefault();
@@ -125,7 +147,7 @@ if ($user["role"] !== 'admin') {
                             $("#error").html(`<strong>${response.message}</strong>`);
                         }
                     }).fail((jqXHR, textStatus, errorThrown) => {
-                       //TODO: use toast
+                        //TODO: use toast
                     });
             });
 
